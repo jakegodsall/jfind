@@ -36,28 +36,43 @@ public class CliHandler {
 
         String name = cli.getOptionValue("name");
         
-        String typeRaw = cli.getOptionValue("type");
-        FileType type;
-        switch (typeRaw.toLowerCase()) {
-            case "d":
-                type = FileType.DIRECTORY;
-                break;
-            case "f":
-                type = FileType.FILE;
-                break;
-            default:
-                throw new IllegalArgumentException("Type must be 'd' or 'f'");
-        }
+        FileType type = parseType(cli.getOptionValue("type"));
 
-        int maxDepth = cli.getOptionCount("maxdepth");
-        if (maxDepth < 0) {
-            throw new IllegalArgumentException("Max depth must be a positive integer");
-        }
+        int maxDepth = parseDepth(cli.getOptionValue("maxdepth"));
 
         boolean hidden = cli.hasOption("hidden");
         boolean print0 = cli.hasOption("print0");
 
         return new FindRequest(path, name, type, maxDepth, hidden, print0);
+    }
+
+    private int parseDepth(String raw) {
+        try {
+            int val = Integer.parseInt(raw);
+            if (val < 0) {
+                throw new IllegalArgumentException("Max depth must be a positive integer");
+            }
+
+            return val;
+        } catch (ArithmeticException e) {
+            throw new IllegalArgumentException("Non-numeric value passed to maxdepth");
+        }
+    }
+
+    private FileType parseType(String raw) {
+        FileType type = FileType.FILE;
+        
+        if (raw != null) {
+            switch (raw.toLowerCase()) {
+                case "d":
+                    type = FileType.DIRECTORY;
+                    break;
+                case "f":
+                    type = FileType.FILE;
+                    break;
+            }
+        }
+        return type;
     }
 
     private Options getOptions() {
