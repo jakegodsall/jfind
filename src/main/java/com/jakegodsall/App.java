@@ -2,6 +2,7 @@ package com.jakegodsall;
 
 import com.jakegodsall.cli.CliHandler;
 import com.jakegodsall.models.FindRequest;
+import com.jakegodsall.service.FindService;
 
 public class App 
 {
@@ -10,6 +11,6 @@ public class App
         CliHandler handler = new CliHandler();
 
         FindRequest request = handler.parseRequest(args);
-        System.out.println(request);
+        FindService.listAll(request);
     }
 }
