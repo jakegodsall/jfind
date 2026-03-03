@@ -1,6 +1,7 @@
 package com.jakegodsall.cli;
 
 import java.nio.file.Path;
+import java.text.NumberFormat;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -54,8 +55,8 @@ public class CliHandler {
             }
 
             return val;
-        } catch (ArithmeticException e) {
-            throw new IllegalArgumentException("Non-numeric value passed to maxdepth");
+        } catch (NumberFormatException e) {
+            return 1;
         }
     }
 
