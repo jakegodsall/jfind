@@ -9,7 +9,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.jakegodsall.models.FileType;
 import com.jakegodsall.models.FindRequest;
+
 
 public class CliHandler {
     public void parse(String[] args) {
@@ -34,10 +36,17 @@ public class CliHandler {
         String name = cli.getOptionValue("name");
         
         String typeRaw = cli.getOptionValue("type");
-        if (!typeRaw.toLowerCase().equals("f") && !typeRaw.toLowerCase().equals("d")) {
-            throw new IllegalArgumentException("The type must be either f or d");
+        FileType type;
+        switch (typeRaw.toLowerCase()) {
+            case "d":
+                type = FileType.DIRECTORY;
+                break;
+            case "f":
+                type = FileType.FILE;
+                break;
+            default:
+                throw new IllegalArgumentException("Type must be 'd' or 'f'");
         }
-        char type = Character.toLowerCase(typeRaw.charAt(0));
 
         int maxDepth = cli.getOptionCount("maxdepth");
         if (maxDepth < 0) {
