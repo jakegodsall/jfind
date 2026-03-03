@@ -14,14 +14,15 @@ import com.jakegodsall.models.FindRequest;
 
 
 public class CliHandler {
-    public void parse(String[] args) {
+    public FindRequest parseRequest(String[] args) {
         CommandLineParser parser = new DefaultParser();
         
         try {
             CommandLine cli = parser.parse(getOptions(), args);
-            FindRequest result = validate(cli);
+            return validate(cli);
         } catch (ParseException ex) {
             System.out.println("Error parsing the provided arguments: " + ex.getMessage());
+            return null;
         }
     }
 
