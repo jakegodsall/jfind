@@ -30,7 +30,10 @@ public class CliHandler {
     private FindRequest validate(CommandLine cli) {
 
         String[] remainder = cli.getArgs();
-        if (remainder.length != 1) {
+        if (remainder.length == 0) {
+            throw new IllegalArgumentException("A path must be provided");
+        }
+        if (remainder.length > 1) {
             throw new IllegalArgumentException("Only a single path can be passed");
         }
         Path path = Path.of(remainder[0]);
